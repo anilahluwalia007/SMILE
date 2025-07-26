@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMETS Framework | CorpSpider 2025</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        :root {
+            --primary-bg: #0a0a14;
+            --card-bg: rgba(20, 20, 35, 0.85);
+            --accent: #00c6a2;
+            --accent-dark: #008c74;
+            --text: #f0f0f7;
+            --text-secondary: #a0a0c0;
+            --border: rgba(100, 200, 200, 0.15);
+            --spider-color: #c0c0d0;
+        }
+
+        body {
+            background: var(--primary-bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Spider Web Background */
+        .web-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #0a1020 0%, #050810 70%);
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .web {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            background-image: 
+                radial-gradient(circle at center, transparent 95%, rgba(100, 180, 200, 0.1) 100%),
+                linear-gradient(0deg, transparent 49%, rgba(100, 180, 200, 0.1) 50%, transparent 51%),
+                linear-gradient(60deg, transparent 49%, rgba(100, 180, 200, 0.1) 50%, transparent 51%),
+                linear-gradient(120deg, transparent 49%, rgba(100, 180, 200, 0.1) 50%, transparent 51%);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        /* Spiders */
+        .spider {
+            position: absolute;
+            z-index: -1;
+        }
+
+        .spider-body {
+            width: 12px;
+            height: 12px;
+            background: var(--spider-color);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .spider-legs {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .leg {
+            position: absolute;
+            width: 15px;
+            height: 2px;
+            background: var(--spider-color);
+            transform-origin: left center;
+        }
+
+        .spider1 { top: 20%; left: 30%; animation: moveSpider1 20s infinite linear; }
+        .spider2 { top: 70%; left: 80%; animation: moveSpider2 25s infinite linear; }
+        .spider3 { top: 40%; left: 10%; animation: moveSpider3 18s infinite linear; }
+
+        @keyframes moveSpider1 {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(150px, 80px); }
+            50% { transform: translate(300px, 0); }
+            75% { transform: translate(150px, -80px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        @keyframes moveSpider2 {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-100px, 120px); }
+            50% { transform: translate(-200px, 0); }
+            75% { transform: translate(-100px, -120px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        @keyframes moveSpider3 {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(120px, -100px); }
+            50% { transform: translate(240px, 0); }
+            75% { transform: translate(120px, 100px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* Header */
+        header {
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 12px;
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+        }
+
+        nav a:hover:after, nav a.active:after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 20px 120px;
+            position: relative;
+            z-index: 5;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            background: linear-gradient(to right, #f0f0f7, #a0e0d0, #00c6a2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .accent-text {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Framework Elements */
+        .framework {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px 100px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 60px;
+            color: var(--accent);
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            margin: 15px auto;
+            border-radius: 3px;
+        }
+
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .element-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .element-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .element-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .element-card:hover:before {
+            transform: scaleX(1);
+        }
+
+        .element-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(0, 198, 162, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 30px;
+            color: var(--accent);
+        }
+
+        .element-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .sub-elements {
+            list-style: none;
+        }
+
+        .sub-element {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: var(--text-secondary);
+        }
+
+        .sub-element:last-child {
+            border-bottom: none;
+        }
+
+        .sub-element i {
+            margin-right: 12px;
+            color: var(--accent);
+            font-size: 12px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 14px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .copyright {
+            margin-top: 10px;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 48px;
+            }
+            nav ul {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .hero h1 {
+                font-size: 36px;
+            }
+            .hero p {
+                font-size: 18px;
+            }
+            .section-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Spider Web Background -->
+    <div class="web-background">
+        <div class="web"></div>
+        <div class="spider spider1">
+            <div class="spider-body"></div>
+            <div class="spider-legs">
+                <div class="leg" style="transform: rotate(30deg); top: -5px; left: 5px;"></div>
+                <div class="leg" style="transform: rotate(-30deg); top: -5px; left: -5px;"></div>
+                <div class="leg" style="transform: rotate(60deg); top: 0px; left: 6px;"></div>
+                <div class="leg" style="transform: rotate(-60deg); top: 0px; left: -6px;"></div>
+                <div class="leg" style="transform: rotate(120deg); top: 5px; left: 5px;"></div>
+                <div class="leg" style="transform: rotate(-120deg); top: 5px; left: -5px;"></div>
+                <div class="leg" style="transform: rotate(150deg); top: 6px; left: 0px;"></div>
+                <div class="leg" style="transform: rotate(-150deg); top: 6px; left: 0px;"></div>
+            </div>
+        </div>
+        <div class="spider spider2">
+            <div class="spider-body"></div>
+            <div class="spider-legs">
+                <div class="leg" style="transform: rotate(30deg); top: -5px; left: 5px;"></div>
+                <div class="leg" style="transform: rotate(-30deg); top: -5px; left: -5px;"></div>
+                <div class="leg" style="transform: rotate(60deg); top: 0px; left: 6px;"></div>
+                <div class="leg" style="transform: rotate(-60deg); top: 0px; left: -6px;"></div>
+                <div class="leg" style="transform: rotate(120deg); top: 5px; left: 5px;"></div>
+                <div class="leg" style="transform: rotate(-120deg); top: 5px; left: -5px;"></div>
+                <div class="leg" style="transform: rotate(150deg); top: 6px; left: 0px;"></div>
+                <div class="leg" style="transform: rotate(-150deg); top: 6px; left: 0px;"></div>
+            </div>
+        </div>
+        <div class="spider spider3">
+            <div class="spider-body"></div>
+            <div class="spider-legs">
+                <div class="leg" style="transform: rotate(30deg); top: -5px; left: 5px;"></div>
+                <div class="leg" style="transform: rotate(-30deg); top: -5px; left: -5px;"></div>
+                <div class="leg" style="transform: rotate(60deg); top: 0px; left: 6px;"></div>
+                <div class="leg" style="transform: rotate(-60deg); top: 0px; left: -6px;"></div>
+                <div class="leg" style="transform: rotate(120deg); top: 5px; left: 5px;"></div>
+                <div class="leg" style="transform: rotate(-120deg); top: 5px; left: -5px;"></div>
+                <div class="leg" style="transform: rotate(150deg); top: 6px; left: 0px;"></div>
+                <div class="leg" style="transform: rotate(-150deg); top: 6px; left: 0px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-spider"></i>
+            <span>BMETS Framework</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Framework</a></li>
+                <li><a href="#">Applications</a></li>
+                <li><a href="#">Case Studies</a></li>
+                <li><a href="#">Resources</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Business Models for Energy Transition</h1>
+        <p>An integrated framework for navigating the complex landscape of sustainable energy transformation through strategic innovation and ESG integration.</p>
+        <div class="buttons">
+            <button style="background: var(--accent);">Explore Framework</button>
+            <button style="background: transparent; border: 2px solid var(--accent);">Download PDF</button>
+        </div>
+    </section>
+
+    <!-- Framework Elements -->
+    <section class="framework">
+        <h2 class="section-title">BMETS Framework Elements</h2>
+        
+        <div class="elements-grid">
+            <!-- Strategy -->
+            <div class="element-card">
+                <div class="element-icon">
+                    <i class="fas fa-chess"></i>
+                </div>
+                <h3 class="element-title">Strategy</h3>
+                <ul class="sub-elements">
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Competitive Edge Strategy</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> PESTEL and SWOT</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Environment</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Social</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> ESG Environment</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Risk Management</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Role of NED's</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Financial Strategy</li>
+                </ul>
+            </div>
+            
+            <!-- Marketing -->
+            <div class="element-card">
+                <div class="element-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <h3 class="element-title">Marketing</h3>
+                <ul class="sub-elements">
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Marketing/rebranding</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Brand Management/Preservation</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Stakeholder mapping</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Stakeholder influence</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> 7 p's Marketing</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> ESG/Green brand promotion</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Greenwashing</li>
+                </ul>
+            </div>
+            
+            <!-- Innovation -->
+            <div class="element-card">
+                <div class="element-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3 class="element-title">Innovation</h3>
+                <ul class="sub-elements">
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Innovation</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Organisational Assessment</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Entrepreneurial Business Case Evaluation</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Continuous Improvement Strategies</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Renewable energy appetite</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Green investment</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Green deal</li>
+                </ul>
+            </div>
+            
+            <!-- Leveraged Change -->
+            <div class="element-card">
+                <div class="element-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <h3 class="element-title">Leveraged Change</h3>
+                <ul class="sub-elements">
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Change Management</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Deming PDCA KPI</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Ethical and Sustainable Implications</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Change theories, Models and Frameworks</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Human side of change</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Cultural Aspects of Change</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Rise of Transactional, Entrepreneurial, Leadership</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Moral amnesia</li>
+                </ul>
+            </div>
+            
+            <!-- ESG -->
+            <div class="element-card">
+                <div class="element-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3 class="element-title">ESG</h3>
+                <ul class="sub-elements">
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> ESG</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Governance</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> ESG Financing</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> ESG Reporting</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> ESG Materiality maps</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Public policy measures</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> SPC Goals</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Leadership Assessment</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Mission/Vision Statement</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Tricker's model</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Supply Chain/Procurement Transparency</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Code of conduct</li>
+                    <li class="sub-element"><i class="fas fa-caret-right"></i> Decision Making</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>BMETS Framework for Sustainable Energy Transition</p>
+        <p class="copyright">© 2025 CorpSpider. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Add hover effect to buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'translateY(-3px)';
+                button.style.boxShadow = '0 10px 20px rgba(0, 198, 162, 0.3)';
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translateY(0)';
+                button.style.boxShadow = 'none';
+            });
+            
+            // Initial styling
+            button.style.padding = '14px 32px';
+            button.style.borderRadius = '50px';
+            button.style.border = 'none';
+            button.style.color = 'white';
+            button.style.fontWeight = '600';
+            button.style.fontSize = '16px';
+            button.style.cursor = 'pointer';
+            button.style.transition = 'all 0.3s ease';
+            button.style.margin = '0 10px';
+        });
+    </script>
+</body>
+</html>
